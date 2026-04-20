@@ -15,7 +15,7 @@ export default function Home() {
             alt="Spring Summer 26 Editorial" 
             fill 
             sizes="100vw"
-            className="object-cover object-center hero-image opacity-80"
+            className="object-cover object-top hero-image opacity-80"
             priority
           />
         </div>
