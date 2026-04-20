@@ -15,11 +15,11 @@ export default function Home() {
             alt="Spring Summer 26 Editorial" 
             fill 
             sizes="100vw"
-            className="object-cover object-top hero-image opacity-80"
+            className="object-cover object-top hero-image opacity-100"
             priority
           />
         </div>
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/10" />
         <div className="absolute bottom-12 left-6 right-6 md:bottom-20 md:left-12 max-w-[1600px] mx-auto z-10 flex flex-col md:flex-row justify-between items-end">
           <h1 className="text-5xl md:text-8xl font-bold uppercase tracking-tight text-white mb-6 md:mb-0">
             SPRING /<br />SUMMER 26
