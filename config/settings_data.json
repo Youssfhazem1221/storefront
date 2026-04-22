@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "text": "FREE SHIPPING ON ALL ORDERS OVER 1000 EGP",
+          "show_close": true
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/logo_final_png_9faeb8c6-fed2-49e9-9b01-b23de2b93ad9.png",
+          "menu": "main-menu"
+        }
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {
+          "heading": "STAY UPDATED",
+          "subheading": "Subscribe to our mailing list for exclusive drops and updates.",
+          "placeholder": "Enter your email",
+          "button_label": "SUBSCRIBE"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "about_text": "Premium apparel for the modern culture.",
+          "instagram_url": "",
+          "tiktok_url": ""
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}
