@@ -14,7 +14,7 @@
       "settings": {
         "image": "shopify://shop_images/gpt-image-1.5-high-fidelity_b_make_them_a_bit_long.png",
         "subheading": "",
-        "heading": "SPRING / SUMMER 26",
+        "heading": "",
         "button_label": "SHOP NOW",
         "button_link": ""
       }
@@ -27,10 +27,15 @@
         "collection": "frontpage",
         "products_to_show": 6
       }
+    },
+    "17768933019e2a442f": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "featured"
+    "featured",
+    "17768933019e2a442f"
   ]
 }

@@ -20,12 +20,13 @@
       "header": {
         "type": "header",
         "settings": {
-          "logo": "shopify://shop_images/logo_final_png_9faeb8c6-fed2-49e9-9b01-b23de2b93ad9.png",
+          "logo": "shopify://shop_images/logo_final_png_1.png",
           "menu": "main-menu"
         }
       },
       "newsletter": {
         "type": "newsletter",
+        "disabled": true,
         "settings": {
           "heading": "STAY UPDATED",
           "subheading": "Subscribe to our mailing list for exclusive drops and updates.",
@@ -36,7 +37,8 @@
       "footer": {
         "type": "footer",
         "settings": {
-          "about_text": "Premium apparel for the modern culture.",
+          "logo": "shopify://shop_images/logo_final_png_1.png",
+          "about_text": "The dialogue betwwen what was and what will be",
           "instagram_url": "",
           "tiktok_url": ""
         }
