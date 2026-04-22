@@ -1,0 +1,80 @@
+<section class="py-24 max-w-[1600px] mx-auto w-full px-6">
+  <div class="flex justify-between items-end mb-12 border-b border-[#222] pb-6">
+    <h2 class="text-xl md:text-3xl font-bold uppercase tracking-widest text-white">
+      {{ section.settings.title | escape }}
+    </h2>
+    {%- if section.settings.collection != blank -%}
+      <a href="{{ section.settings.collection.url }}" class="text-xs uppercase tracking-widest hover:text-gray-400 transition-colors border-b border-transparent hover:border-gray-400">
+        View All
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {%- if section.settings.collection != blank -%}
+      {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+        <a href="{{ product.url }}" class="group flex flex-col block">
+          <div class="relative aspect-[3/4] w-full bg-[#111] overflow-hidden mb-4 border border-[#222]">
+            {%- if product.featured_image != blank -%}
+              <img 
+                src="{{ product.featured_image | image_url: width: 800 }}" 
+                alt="{{ product.title | escape }}" 
+                class="object-cover object-top h-full w-full transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+            {%- endif -%}
+          </div>
+          <h3 class="text-sm font-bold uppercase tracking-widest">{{ product.title }}</h3>
+          <p class="text-xs text-gray-500 uppercase mt-1 mb-2 tracking-widest">{{ product.type }}</p>
+          <p class="text-sm border-t border-[#222] pt-2 mt-auto">{{ product.price | money }}</p>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="flex flex-col">
+          <div class="relative aspect-[3/4] w-full bg-[#111] overflow-hidden mb-4 border border-[#222]">
+            {{ 'product-' | append: i | placeholder_svg_tag: 'w-full h-full object-cover grayscale opacity-50' }}
+          </div>
+          <h3 class="text-sm font-bold uppercase tracking-widest">Product Placeholder</h3>
+          <p class="text-xs text-gray-500 uppercase mt-1 mb-2 tracking-widest">Category</p>
+          <p class="text-sm border-t border-[#222] pt-2 mt-auto">$00.00</p>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}

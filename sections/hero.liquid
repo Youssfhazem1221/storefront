@@ -1,0 +1,59 @@
+<section class="relative h-[85vh] w-full overflow-hidden border-b border-[#222]">
+  <div class="absolute inset-0">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 2000 }}" 
+           alt="{{ section.settings.heading | escape }}" 
+           class="object-cover object-top w-full h-full opacity-100"
+           loading="lazy">
+    {%- else -%}
+      <div class="w-full h-full bg-[#111]"></div>
+    {%- endif -%}
+  </div>
+  <div class="absolute inset-0 bg-black/10"></div>
+  <div class="absolute bottom-12 left-6 right-6 md:bottom-20 md:left-12 max-w-[1600px] mx-auto z-10 flex flex-col md:flex-row justify-between items-end">
+    <h1 class="text-5xl md:text-8xl font-bold uppercase tracking-tight text-white mb-6 md:mb-0">
+      {{ section.settings.heading | newline_to_br }}
+    </h1>
+    {%- if section.settings.button_link != blank -%}
+      <a href="{{ section.settings.button_link }}" 
+         class="flex items-center justify-center px-8 py-4 bg-white text-black text-sm uppercase tracking-[0.2em] font-bold hover:bg-gray-200 transition-colors">
+        {{ section.settings.button_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SPRING /\nSUMMER 26"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Section"
+    }
+  ]
+}
+{% endschema %}

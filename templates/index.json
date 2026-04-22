@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "heading": "SPRING /\nSUMMER 26",
+        "button_label": "Explore Collection"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured"
+  ]
+}
