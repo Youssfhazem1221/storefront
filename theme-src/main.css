@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@source "../layout/*.liquid";
+@source "../sections/*.liquid";
+@source "../snippets/*.liquid";
+@source "../templates/*.liquid";
 
 @theme inline {
   --color-background: var(--background);
@@ -12,7 +16,7 @@
   --background: #000000;
   --foreground: #ffffff;
   --muted: #888888;
-  --border: #333333;
+  --border: #222222;
 }
 
 * {
@@ -25,6 +29,101 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: #fff;
+  color: #000;
+}
+
+/* ─── Accessibility ─── */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-to-content-link:focus {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  clip: auto;
+  padding: 1rem;
+  background: #fff;
+  color: #000;
+  text-align: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+/* ─── Hide scrollbar utility ─── */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Product Card Hover ─── */
+.nouveau-card {
+  transition: transform 0.3s ease;
+}
+
+/* ─── Header Scroll State ─── */
+.header-scrolled {
+  border-bottom-color: #333;
+  background-color: rgba(0, 0, 0, 0.98);
+}
+
+/* ─── Details/Summary Reset ─── */
+details summary {
+  list-style: none;
+}
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ─── Smooth page transitions ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── Number Input Arrows ─── */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 @layer utilities {

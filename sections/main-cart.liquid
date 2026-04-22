@@ -1,0 +1,78 @@
+<div class="max-w-[1600px] mx-auto px-6 py-16 md:py-24">
+  {%- if cart.item_count > 0 -%}
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+
+      {%- comment -%} Cart Items {%- endcomment -%}
+      <div class="flex-1">
+        <div class="flex justify-between items-end mb-8 border-b border-[#222] pb-6">
+          <h1 class="text-3xl md:text-5xl font-bold uppercase tracking-widest">Your Cart</h1>
+          <p class="text-[10px] text-gray-500 uppercase tracking-widest">{{ cart.item_count }} item{{ cart.item_count | pluralize: '', 's' }}</p>
+        </div>
+
+        {%- for item in cart.items -%}
+          <div class="flex gap-4 md:gap-6 py-6 border-b border-[#222]">
+            <a href="{{ item.url }}" class="w-24 md:w-32 flex-shrink-0 aspect-[3/4] bg-[#111] overflow-hidden border border-[#222]">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 300 }}" alt="{{ item.title | escape }}" class="w-full h-full object-cover" loading="lazy" width="300" height="400">
+              {%- endif -%}
+            </a>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <a href="{{ item.url }}" class="text-xs font-bold uppercase tracking-widest hover:text-gray-400 transition-colors">{{ item.product.title }}</a>
+                {%- unless item.variant.title == 'Default Title' -%}
+                  <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">{{ item.variant.title }}</p>
+                {%- endunless -%}
+              </div>
+              <div class="flex items-center justify-between mt-4">
+                <div class="flex items-center gap-4">
+                  <div class="flex items-center border border-[#222]">
+                    <a href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity={{ item.quantity | minus: 1 }}" class="px-3 py-2 text-xs hover:text-gray-400 transition-colors">−</a>
+                    <span class="px-3 py-2 text-xs font-mono border-x border-[#222]">{{ item.quantity }}</span>
+                    <a href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity={{ item.quantity | plus: 1 }}" class="px-3 py-2 text-xs hover:text-gray-400 transition-colors">+</a>
+                  </div>
+                  <a href="{{ routes.cart_change_url }}?id={{ item.key }}&quantity=0" class="text-[10px] text-gray-500 uppercase tracking-widest hover:text-white transition-colors">Remove</a>
+                </div>
+                <span class="text-sm font-bold">{{ item.final_line_price | money }}</span>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Cart Summary {%- endcomment -%}
+      <div class="lg:w-[380px] lg:sticky lg:top-28 lg:self-start">
+        <div class="border border-[#222] p-6 md:p-8">
+          <h2 class="text-xs font-bold uppercase tracking-[0.25em] mb-6 pb-4 border-b border-[#222]">Order Summary</h2>
+          <div class="flex justify-between items-center mb-6">
+            <span class="text-xs uppercase tracking-widest text-gray-500">Subtotal</span>
+            <span class="text-lg font-bold">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6 text-center leading-relaxed">Shipping & taxes calculated at checkout</p>
+          <a href="/checkout" class="block w-full py-4 bg-white text-black text-[10px] uppercase tracking-[0.25em] font-bold text-center hover:bg-gray-100 transition-colors">
+            Checkout — {{ cart.total_price | money }}
+          </a>
+          <a href="/collections/all" class="block w-full py-3 text-[10px] uppercase tracking-[0.2em] text-center text-gray-500 hover:text-white transition-colors mt-3">
+            Continue Shopping
+          </a>
+          {% render 'trust-badges' %}
+        </div>
+      </div>
+    </div>
+
+  {%- else -%}
+    <div class="min-h-[60vh] flex flex-col items-center justify-center text-center">
+      <h1 class="text-3xl md:text-5xl font-bold uppercase tracking-widest mb-6">Your Cart</h1>
+      <p class="text-sm text-gray-500 uppercase tracking-widest mb-8">Your cart is currently empty</p>
+      <a href="/collections/all" class="px-8 py-4 bg-white text-black text-[10px] uppercase tracking-[0.25em] font-bold hover:bg-gray-100 transition-colors">
+        Continue Shopping
+      </a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Main Cart",
+  "settings": []
+}
+{% endschema %}

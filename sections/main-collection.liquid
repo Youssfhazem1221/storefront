@@ -1,55 +1,67 @@
 <div class="max-w-[1600px] mx-auto px-6 py-12 md:py-24">
-  <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 border-b border-[#222] pb-6 gap-6">
-    <h1 class="text-4xl md:text-6xl font-bold uppercase tracking-widest text-white">
-      {{ collection.title }}
-    </h1>
-    
-    {%- if section.settings.show_filters -%}
-      <div class="flex gap-6 text-xs uppercase tracking-widest text-gray-500 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar">
-        <a href="{{ collection.url }}" class="transition-colors whitespace-nowrap hover:text-white {% if current_tags == blank %}text-white border-b border-white{% endif %}">
-          All
-        </a>
-        {%- for tag in collection.all_tags -%}
-          <a href="{{ tag | link_to_tag: tag }}" class="transition-colors whitespace-nowrap hover:text-white {% if current_tags contains tag %}text-white border-b border-white{% endif %}">
-            {{ tag }}
-          </a>
-        {%- endfor -%}
+  {%- comment -%} Collection Header {%- endcomment -%}
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 border-b border-[#222] pb-6 gap-6">
+    <div>
+      <h1 class="text-4xl md:text-6xl font-bold uppercase tracking-widest text-white">
+        {{ collection.title }}
+      </h1>
+      {%- if collection.description != blank -%}
+        <p class="text-xs text-gray-500 uppercase tracking-widest mt-3 max-w-lg leading-relaxed">
+          {{ collection.description | strip_html | truncate: 200 }}
+        </p>
+      {%- endif -%}
+      <p class="text-[10px] text-gray-600 uppercase tracking-widest mt-2">
+        {{ collection.products_count }} {{ 'collections.general.items_count' | t: count: collection.products_count }}
+      </p>
+    </div>
+
+    {%- if section.settings.show_sort -%}
+      <div class="flex items-center gap-4">
+        <label for="sort-select" class="text-[10px] uppercase tracking-widest text-gray-500">Sort:</label>
+        <select id="sort-select" class="bg-transparent border border-[#222] text-[10px] uppercase tracking-widest py-2 px-3 focus:outline-none focus:border-white transition-colors cursor-pointer appearance-none" onchange="window.location.href = this.value">
+          <option value="{{ collection.url }}?sort_by=manual" {% if collection.sort_by == 'manual' %}selected{% endif %}>Featured</option>
+          <option value="{{ collection.url }}?sort_by=best-selling" {% if collection.sort_by == 'best-selling' %}selected{% endif %}>Best Selling</option>
+          <option value="{{ collection.url }}?sort_by=price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price: Low → High</option>
+          <option value="{{ collection.url }}?sort_by=price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price: High → Low</option>
+          <option value="{{ collection.url }}?sort_by=created-descending" {% if collection.sort_by == 'created-descending' %}selected{% endif %}>Newest</option>
+        </select>
       </div>
     {%- endif -%}
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-16">
+  {%- comment -%} Product Grid {%- endcomment -%}
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-16">
     {%- for product in collection.products -%}
-      <a href="{{ product.url }}" class="group flex flex-col block">
-        <div class="relative aspect-[3/4] w-full bg-[#111] overflow-hidden mb-4 border border-[#222]">
-          {%- if product.featured_image != blank -%}
-            <img 
-              src="{{ product.featured_image | image_url: width: 800 }}" 
-              alt="{{ product.title | escape }}" 
-              class="object-cover object-top h-full w-full transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-              loading="lazy"
-            >
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
-          {%- endif -%}
-
-          {%- unless product.available -%}
-            <div class="absolute top-4 right-4 bg-black px-3 py-1 text-[10px] uppercase tracking-widest text-white">
-              Sold Out
-            </div>
-          {%- endunless -%}
-        </div>
-        <h3 class="text-sm font-bold uppercase tracking-widest">{{ product.title }}</h3>
-        <p class="text-xs text-gray-500 uppercase mt-1 mb-2 tracking-widest">{{ product.type }}</p>
-        <p class="text-sm border-t border-[#222] pt-2 mt-auto">{{ product.price | money }}</p>
-      </a>
+      {% render 'product-card', product: product, index: forloop.index %}
     {%- endfor -%}
   </div>
 
   {%- if collection.products.size == 0 -%}
-    <div class="text-center py-24">
-      <p class="text-gray-500 uppercase tracking-widest">No products found in this collection.</p>
+    <div class="text-center py-24 min-h-[40vh] flex flex-col items-center justify-center">
+      <p class="text-gray-500 uppercase tracking-widest mb-6">No products found in this collection.</p>
+      <a href="/collections/all" class="text-xs uppercase tracking-[0.2em] font-bold border-b border-white pb-1 hover:text-gray-400 hover:border-gray-400 transition-colors">
+        View All Products
+      </a>
     </div>
+  {%- endif -%}
+
+  {%- comment -%} Pagination {%- endcomment -%}
+  {%- if paginate.pages > 1 -%}
+    <nav class="flex justify-center gap-4 mt-16 pt-8 border-t border-[#222]" aria-label="Pagination">
+      {%- if paginate.previous -%}
+        <a href="{{ paginate.previous.url }}" class="text-xs uppercase tracking-widest hover:text-gray-400 transition-colors">← Prev</a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a href="{{ part.url }}" class="text-xs uppercase tracking-widest hover:text-gray-400 transition-colors">{{ part.title }}</a>
+        {%- else -%}
+          <span class="text-xs uppercase tracking-widest text-white border-b border-white">{{ part.title }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="text-xs uppercase tracking-widest hover:text-gray-400 transition-colors">Next →</a>
+      {%- endif -%}
+    </nav>
   {%- endif -%}
 </div>
 
@@ -59,8 +71,8 @@
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_filters",
-      "label": "Show Tag Filters",
+      "id": "show_sort",
+      "label": "Show Sort Options",
       "default": true
     }
   ]

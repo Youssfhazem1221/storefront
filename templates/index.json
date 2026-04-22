@@ -3,6 +3,7 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "subheading": "New Collection",
         "heading": "SPRING /\nSUMMER 26",
         "button_label": "Explore Collection"
       }
@@ -10,13 +11,23 @@
     "featured": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured",
+        "title": "New Arrivals",
+        "subtitle": "Fresh drops just landed",
+        "products_to_show": 4
+      }
+    },
+    "featured-2": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Best Sellers",
+        "subtitle": "Most wanted pieces",
         "products_to_show": 4
       }
     }
   },
   "order": [
     "hero",
-    "featured"
+    "featured",
+    "featured-2"
   ]
 }

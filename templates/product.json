@@ -3,9 +3,16 @@
     "main": {
       "type": "main-product",
       "settings": {}
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You May Also Like"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "related"
   ]
 }

@@ -1,0 +1,50 @@
+{%- if section.settings.text != blank -%}
+<div id="announcement-bar" class="bg-white text-black overflow-hidden border-b border-[#222] relative" role="region" aria-label="Announcement">
+  <div class="announcement-scroll flex items-center h-8 whitespace-nowrap">
+    {%- for i in (1..12) -%}
+      <span class="text-[10px] uppercase tracking-[0.3em] font-bold px-8 flex items-center gap-3">
+        {{ section.settings.text }}
+        <span class="text-[8px] opacity-40">✦</span>
+      </span>
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.show_close -%}
+    <button id="announcement-close" class="absolute right-3 top-1/2 -translate-y-1/2 text-black hover:opacity-50 transition-opacity z-10" aria-label="Close announcement">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  {%- endif -%}
+</div>
+
+<style>
+  .announcement-scroll {
+    animation: announcement-scroll 30s linear infinite;
+  }
+  .announcement-scroll:hover {
+    animation-play-state: paused;
+  }
+  @keyframes announcement-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement Text",
+      "default": "FREE SHIPPING ON ALL ORDERS OVER 1000 EGP"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show Close Button",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

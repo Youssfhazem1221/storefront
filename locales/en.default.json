@@ -1,0 +1,57 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_text": "Skip to content",
+      "refresh_page": "Choosing a selection results in a full page refresh."
+    }
+  },
+  "sections": {
+    "header": {
+      "cart": "Cart",
+      "menu": "Menu",
+      "close": "Close",
+      "search": "Search"
+    },
+    "cart": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty",
+      "continue_shopping": "Continue Shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "cart_error": "There was an error while updating your cart. Please try again.",
+      "cart_quantity_error_html": "You can only add [quantity] of this item to your cart."
+    },
+    "announcement_bar": {
+      "close": "Close"
+    },
+    "footer": {
+      "newsletter_title": "Join The Culture",
+      "newsletter_placeholder": "Enter your email",
+      "newsletter_button": "Subscribe"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "value_unavailable": "[value] - Unavailable",
+      "added_to_cart": "Added to Cart",
+      "view_cart": "View Cart",
+      "quantity": "Quantity",
+      "description": "Description",
+      "details": "Details",
+      "size_guide": "Size Guide",
+      "shipping_info": "Shipping Info",
+      "returns": "Returns"
+    }
+  },
+  "collections": {
+    "general": {
+      "all": "All",
+      "no_products": "No products found in this collection.",
+      "items_count": "{{ count }} products"
+    }
+  }
+}

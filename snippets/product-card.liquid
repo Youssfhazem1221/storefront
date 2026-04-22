@@ -1,0 +1,72 @@
+{%- comment -%}
+  Reusable product card snippet
+  Usage: {% render 'product-card', product: product, index: forloop.index %}
+{%- endcomment -%}
+
+<a href="{{ product.url }}" class="nouveau-card group flex flex-col block" id="product-card-{{ product.id }}">
+  <div class="relative aspect-[3/4] w-full bg-[#111] overflow-hidden mb-4 border border-[#222]">
+    {%- if product.featured_image != blank -%}
+      {%- if product.images.size > 1 -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.title | escape }}"
+          class="object-cover object-top h-full w-full transition-all duration-700 group-hover:opacity-0"
+          loading="{% if index <= 4 %}eager{% else %}lazy{% endif %}"
+          width="800"
+          height="1067"
+        >
+        <img
+          src="{{ product.images[1] | image_url: width: 800 }}"
+          alt="{{ product.title | escape }} - Alternate"
+          class="absolute inset-0 object-cover object-top h-full w-full opacity-0 transition-all duration-700 group-hover:opacity-100 group-hover:scale-105"
+          loading="lazy"
+          width="800"
+          height="1067"
+        >
+      {%- else -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 800 }}"
+          alt="{{ product.title | escape }}"
+          class="object-cover object-top h-full w-full transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+          loading="{% if index <= 4 %}eager{% else %}lazy{% endif %}"
+          width="800"
+          height="1067"
+        >
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+    {%- endif -%}
+
+    {%- unless product.available -%}
+      <div class="absolute top-4 left-4 bg-black/90 backdrop-blur-sm px-3 py-1.5 text-[10px] uppercase tracking-widest text-white border border-[#333]">
+        Sold Out
+      </div>
+    {%- endunless -%}
+
+    {%- if product.compare_at_price > product.price -%}
+      <div class="absolute top-4 right-4 bg-white text-black px-3 py-1.5 text-[10px] uppercase tracking-widest font-bold">
+        Sale
+      </div>
+    {%- endif -%}
+
+    {%- if product.available and product.variants.size == 1 -%}
+      <div class="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <form method="post" action="/cart/add" class="w-full">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="w-full py-3 bg-white text-black text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-gray-200 transition-colors">
+            Quick Add
+          </button>
+        </form>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <h3 class="text-xs font-bold uppercase tracking-widest leading-tight">{{ product.title }}</h3>
+  <p class="text-[10px] text-gray-500 uppercase mt-1 mb-2 tracking-widest">{{ product.type }}</p>
+  <div class="text-sm border-t border-[#222] pt-2 mt-auto flex items-center gap-2">
+    {%- if product.compare_at_price > product.price -%}
+      <span class="text-gray-500 line-through text-xs">{{ product.compare_at_price | money }}</span>
+    {%- endif -%}
+    <span>{{ product.price | money }}</span>
+  </div>
+</a>

@@ -1,36 +1,75 @@
-<section class="relative h-[85vh] w-full overflow-hidden border-b border-[#222]">
+<section class="relative h-[90vh] md:h-[95vh] w-full overflow-hidden border-b border-[#222]">
+  {%- comment -%} Background Image {%- endcomment -%}
   <div class="absolute inset-0">
     {%- if section.settings.image != blank -%}
-      <img src="{{ section.settings.image | image_url: width: 2000 }}" 
-           alt="{{ section.settings.heading | escape }}" 
-           class="object-cover object-top w-full h-full opacity-100"
-           loading="lazy">
+      <img
+        src="{{ section.settings.image | image_url: width: 2400 }}"
+        srcset="{{ section.settings.image | image_url: width: 800 }} 800w,
+                {{ section.settings.image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.image | image_url: width: 1800 }} 1800w,
+                {{ section.settings.image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.heading | escape }}"
+        class="object-cover object-top w-full h-full"
+        loading="eager"
+        fetchpriority="high"
+        width="2400"
+        height="1600"
+      >
     {%- else -%}
-      <div class="w-full h-full bg-[#111]"></div>
+      <div class="w-full h-full bg-[#0a0a0a]"></div>
     {%- endif -%}
   </div>
-  <div class="absolute inset-0 bg-black/10"></div>
-  <div class="absolute bottom-12 left-6 right-6 md:bottom-20 md:left-12 max-w-[1600px] mx-auto z-10 flex flex-col md:flex-row justify-between items-end">
-    <h1 class="text-5xl md:text-8xl font-bold uppercase tracking-tight text-white mb-6 md:mb-0">
-      {{ section.settings.heading | newline_to_br }}
-    </h1>
-    {%- if section.settings.button_link != blank -%}
-      <a href="{{ section.settings.button_link }}" 
-         class="flex items-center justify-center px-8 py-4 bg-white text-black text-sm uppercase tracking-[0.2em] font-bold hover:bg-gray-200 transition-colors">
-        {{ section.settings.button_label | escape }}
-      </a>
-    {%- endif -%}
+
+  {%- comment -%} Gradient Overlay {%- endcomment -%}
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+  {%- comment -%} Content {%- endcomment -%}
+  <div class="absolute bottom-12 left-6 right-6 md:bottom-20 md:left-12 md:right-12 max-w-[1600px] mx-auto z-10">
+    <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+      <div>
+        {%- if section.settings.subheading != blank -%}
+          <p class="text-[10px] uppercase tracking-[0.3em] text-gray-300 mb-4">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+        <h1 class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tight text-white leading-[0.85]">
+          {{ section.settings.heading | newline_to_br }}
+        </h1>
+      </div>
+      {%- if section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}"
+           class="group flex items-center gap-3 px-8 py-4 bg-white text-black text-[10px] uppercase tracking-[0.25em] font-bold hover:bg-gray-100 transition-all">
+          {{ section.settings.button_label | escape }}
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Scroll Indicator {%- endcomment -%}
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 animate-pulse">
+    <span class="text-[8px] uppercase tracking-[0.3em] text-gray-400">Scroll</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+    </svg>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Hero Section",
+  "name": "Hero Banner",
   "settings": [
     {
       "type": "image_picker",
       "id": "image",
       "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "New Collection"
     },
     {
       "type": "textarea",
@@ -52,7 +91,7 @@
   ],
   "presets": [
     {
-      "name": "Hero Section"
+      "name": "Hero Banner"
     }
   ]
 }
