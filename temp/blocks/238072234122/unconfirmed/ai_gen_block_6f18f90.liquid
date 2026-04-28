@@ -1,6 +1,636 @@
+{% doc %}
+  @prompt
+    an archive page with previous collections taking influence from erd website 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-archive-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-archive-header-{{ ai_gen_id }} {
+    margin-bottom: {{ block.settings.header_spacing }}px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-archive-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 12px;
+    font-weight: {{ block.settings.title_weight }};
+    letter-spacing: {{ block.settings.title_letter_spacing }}px;
+    text-transform: {{ block.settings.title_transform }};
+  }
+
+  .ai-archive-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .ai-archive-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    margin-bottom: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-archive-item-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.item_background }};
+    transition: transform 0.3s ease;
+  }
+
+  .ai-archive-item-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  .ai-archive-item-link-{{ ai_gen_id }} {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-archive-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ block.settings.image_ratio }};
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  .ai-archive-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .ai-archive-item-{{ ai_gen_id }}:hover .ai-archive-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-archive-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .ai-archive-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-archive-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, {{ block.settings.overlay_opacity }}) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-archive-item-{{ ai_gen_id }}:hover .ai-archive-overlay-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-archive-content-{{ ai_gen_id }} {
+    padding: {{ block.settings.content_padding }}px;
+  }
+
+  .ai-archive-season-{{ ai_gen_id }} {
+    font-size: {{ block.settings.season_size }}px;
+    color: {{ block.settings.season_color }};
+    margin: 0 0 8px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .ai-archive-collection-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.collection_title_size }}px;
+    color: {{ block.settings.collection_title_color }};
+    margin: 0 0 8px;
+    font-weight: {{ block.settings.collection_title_weight }};
+    letter-spacing: 0.5px;
+  }
+
+  .ai-archive-meta-{{ ai_gen_id }} {
+    font-size: {{ block.settings.meta_size }}px;
+    color: {{ block.settings.meta_color }};
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-archive-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_tablet }}, 1fr);
+    }
+
+    .ai-archive-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.8);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-archive-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+    }
+
+    .ai-archive-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding | times: 0.6 }}px 16px;
+    }
+
+    .ai-archive-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.6);
+    }
+  }
+{% endstyle %}
+
+<archive-collections-{{ ai_gen_id }} class="ai-archive-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.show_header %}
+    <div class="ai-archive-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-archive-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.description != blank %}
+        <div class="ai-archive-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="ai-archive-grid-{{ ai_gen_id }}">
+    {% for i in (1..6) %}
+      {% liquid
+        assign collection_key = 'collection_' | append: i
+        assign season_key = 'season_' | append: i
+        assign collection = block.settings[collection_key]
+        assign season = block.settings[season_key]
+      %}
+
+      {% if collection != blank %}
+        <div class="ai-archive-item-{{ ai_gen_id }}">
+          <a href="{{ collection.url }}" class="ai-archive-item-link-{{ ai_gen_id }}">
+            <div class="ai-archive-image-wrapper-{{ ai_gen_id }}">
+              {% if collection.image %}
+                <img
+                  src="{{ collection.image | image_url: width: 800 }}"
+                  alt="{{ collection.image.alt | escape }}"
+                  loading="lazy"
+                  width="800"
+                  height="{{ 800 | divided_by: block.settings.image_ratio }}"
+                  class="ai-archive-image-{{ ai_gen_id }}"
+                >
+              {% elsif collection.products.first.featured_image %}
+                <img
+                  src="{{ collection.products.first.featured_image | image_url: width: 800 }}"
+                  alt="{{ collection.products.first.featured_image.alt | escape }}"
+                  loading="lazy"
+                  width="800"
+                  height="{{ 800 | divided_by: block.settings.image_ratio }}"
+                  class="ai-archive-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="ai-archive-image-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+              <div class="ai-archive-overlay-{{ ai_gen_id }}"></div>
+            </div>
+            <div class="ai-archive-content-{{ ai_gen_id }}">
+              {% if season != blank %}
+                <p class="ai-archive-season-{{ ai_gen_id }}">{{ season }}</p>
+              {% endif %}
+              <h3 class="ai-archive-collection-title-{{ ai_gen_id }}">{{ collection.title }}</h3>
+              {% if block.settings.show_product_count %}
+                <p class="ai-archive-meta-{{ ai_gen_id }}">{{ collection.products_count }} {% if collection.products_count == 1 %}item{% else %}items{% endif %}</p>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</archive-collections-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ArchiveCollections{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.items = this.querySelectorAll('.ai-archive-item-{{ ai_gen_id }}');
+        this.setupAccessibility();
+      }
+
+      setupAccessibility() {
+        this.items.forEach((item) => {
+          const link = item.querySelector('.ai-archive-item-link-{{ ai_gen_id }}');
+          if (link) {
+            link.setAttribute('aria-label', 'View collection');
+          }
+        });
+      }
+    }
+
+    customElements.define('archive-collections-{{ ai_gen_id }}', ArchiveCollections{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Collection archive",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Archive"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Explore previous collections</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Collections"
+    },
+    {
+      "type": "collection",
+      "id": "collection_1",
+      "label": "Collection 1"
+    },
+    {
+      "type": "text",
+      "id": "season_1",
+      "label": "Season 1",
+      "default": "FW 2025"
+    },
+    {
+      "type": "collection",
+      "id": "collection_2",
+      "label": "Collection 2"
+    },
+    {
+      "type": "text",
+      "id": "season_2",
+      "label": "Season 2",
+      "default": "SS 2025"
+    },
+    {
+      "type": "collection",
+      "id": "collection_3",
+      "label": "Collection 3"
+    },
+    {
+      "type": "text",
+      "id": "season_3",
+      "label": "Season 3",
+      "default": "FW 2024"
+    },
+    {
+      "type": "collection",
+      "id": "collection_4",
+      "label": "Collection 4"
+    },
+    {
+      "type": "text",
+      "id": "season_4",
+      "label": "Season 4",
+      "default": "SS 2024"
+    },
+    {
+      "type": "collection",
+      "id": "collection_5",
+      "label": "Collection 5"
+    },
+    {
+      "type": "text",
+      "id": "season_5",
+      "label": "Season 5",
+      "default": "FW 2023"
+    },
+    {
+      "type": "collection",
+      "id": "collection_6",
+      "label": "Collection 6"
+    },
+    {
+      "type": "text",
+      "id": "season_6",
+      "label": "Season 6",
+      "default": "SS 2023"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_tablet",
+      "label": "Columns on tablet",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "0.75", "label": "Portrait (3:4)" },
+        { "value": "1", "label": "Square (1:1)" },
+        { "value": "1.33", "label": "Landscape (4:3)" },
+        { "value": "1.5", "label": "Wide (3:2)" }
+      ],
+      "default": "1.33"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Title transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "lowercase", "label": "Lowercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "label": "Title letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "season_size",
+      "label": "Season size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "collection_title_size",
+      "label": "Collection title size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "collection_title_weight",
+      "label": "Collection title weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "meta_size",
+      "label": "Meta size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Item background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "season_color",
+      "label": "Season",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "collection_title_color",
+      "label": "Collection title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "meta_color",
+      "label": "Meta",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection archive"
+    }
+  ]
+}
 {% endschema %}
