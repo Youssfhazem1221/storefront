@@ -9,12 +9,34 @@
  */
 {
   "sections": {
+    "featured_collection_wk7geb": {
+      "type": "featured-collection",
+      "name": "Featured Collection",
+      "settings": {
+        "title": "",
+        "subtitle": "",
+        "collection": "",
+        "products_to_show": 4
+      }
+    },
+    "hero_t8yVr3": {
+      "type": "hero",
+      "name": "Hero Banner",
+      "settings": {
+        "subheading": "",
+        "heading": "SPRING / SUMMER 26",
+        "button_label": "",
+        "button_link": ""
+      }
+    },
     "main": {
       "type": "main-page",
       "settings": {}
     }
   },
   "order": [
+    "featured_collection_wk7geb",
+    "hero_t8yVr3",
     "main"
   ]
 }
