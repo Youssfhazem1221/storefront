@@ -43,10 +43,18 @@
               "heading": "Quick Links",
               "menu": "brand"
             }
+          },
+          "menu_CxB6ne": {
+            "type": "menu",
+            "settings": {
+              "heading": "SUPPORT",
+              "menu": "support"
+            }
           }
         },
         "block_order": [
-          "menu_ebxMji"
+          "menu_ebxMji",
+          "menu_CxB6ne"
         ],
         "settings": {
           "logo": "shopify://shop_images/logo_final_png_1.png",
