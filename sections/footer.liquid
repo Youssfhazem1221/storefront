@@ -2,7 +2,7 @@
   <div class="max-w-[1600px] mx-auto px-6 py-16 md:py-20">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
 
-      {%- comment -%} Brand Column (Occupies left 2 columns) {%- endcomment -%}
+      {%- comment -%} Brand Column {%- endcomment -%}
       <div class="md:col-span-2 flex flex-col gap-6">
         <a href="{{ routes.root_url }}" class="block w-48" aria-label="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
@@ -29,13 +29,13 @@
       </div>
 
       {%- comment -%} 
-        Menu Container (Occupies right 2 columns)
-        - md:justify-end: Pushes menus to the right
-        - gap-12: Controls distance between columns (Decrease for closer)
+        Menu Container
+        - md:justify-end keeps them to the right
+        - md:gap-32 provides the wider distance you want
       {%- endcomment -%}
-      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10 md:gap-16">
+      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10 md:gap-32">
         {%- for block in section.blocks -%}
-          <div class="flex flex-col gap-3 min-w-[120px]" {{ block.shopify_attributes }}>
+          <div class="flex flex-col gap-3 min-w-[140px]" {{ block.shopify_attributes }}>
             <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] mb-1 text-white">
               {{ block.settings.heading | escape }}
             </h4>
