@@ -1,12 +1,9 @@
 <footer class="border-t border-[#222] bg-black">
   <div class="max-w-[1600px] mx-auto px-6 py-16 md:py-20">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-x-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
 
-
-
-
-      {%- comment -%} Brand Column {%- endcomment -%}
-      <div class="md:col-span-1 flex flex-col gap-6">
+      {%- comment -%} Brand Column (Occupies left 2 columns) {%- endcomment -%}
+      <div class="md:col-span-2 flex flex-col gap-6">
         <a href="{{ routes.root_url }}" class="block w-48" aria-label="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
             <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="object-contain object-left max-h-20 mix-blend-screen" loading="lazy" width="400" height="80">
@@ -31,19 +28,29 @@
         </div>
       </div>
 
-      {%- comment -%} Menu Blocks {%- endcomment -%}
-      {%- for block in section.blocks -%}
-        <div class="flex flex-col gap-3" {{ block.shopify_attributes }}>
-          <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] mb-1 text-white">{{ block.settings.heading | escape }}</h4>
-          {%- if block.settings.menu != blank -%}
-            {%- for link in block.settings.menu.links -%}
-              <a href="{{ link.url }}" class="text-[10px] text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
-                {{ link.title }}
-              </a>
-            {%- endfor -%}
-          {%- endif -%}
-        </div>
-      {%- endfor -%}
+      {%- comment -%} 
+        Menu Container (Occupies right 2 columns)
+        - md:justify-end: Pushes menus to the right
+        - gap-12: Controls distance between columns (Decrease for closer)
+      {%- endcomment -%}
+      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10 md:gap-16">
+        {%- for block in section.blocks -%}
+          <div class="flex flex-col gap-3 min-w-[120px]" {{ block.shopify_attributes }}>
+            <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] mb-1 text-white">
+              {{ block.settings.heading | escape }}
+            </h4>
+            {%- if block.settings.menu != blank -%}
+              <div class="flex flex-col gap-2">
+                {%- for link in block.settings.menu.links -%}
+                  <a href="{{ link.url }}" class="text-[10px] text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
+                    {{ link.title }}
+                  </a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
     </div>
   </div>
 
@@ -112,4 +119,3 @@
   ]
 }
 {% endschema %}
-
