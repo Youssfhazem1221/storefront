@@ -1,13 +1,9 @@
 <footer class="border-t border-[#222] bg-black">
   <div class="max-w-[1600px] mx-auto px-6 py-16 md:py-20">
-    {%- comment -%} 
-      Using grid-cols-6 gives us more granular control.
-      Brand takes 4/6, Menu area takes 2/6.
-    {%- endcomment -%}
-    <div class="grid grid-cols-1 md:grid-cols-6 gap-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
 
-      {%- comment -%} Brand Column (Takes up 4 out of 6 columns) {%- endcomment -%}
-      <div class="md:col-span-4 flex flex-col gap-6">
+      {%- comment -%} Brand Column {%- endcomment -%}
+      <div class="md:col-span-2 flex flex-col gap-6">
         <a href="{{ routes.root_url }}" class="block w-48" aria-label="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
             <img src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name }}" class="object-contain object-left max-h-20 mix-blend-screen" loading="lazy" width="400" height="80">
@@ -32,30 +28,19 @@
         </div>
       </div>
 
-      {%- comment -%} 
-        Menu Wrapper (Takes up 2 out of 6 columns)
-        md:justify-end keeps them to the right.
-        gap-10 controls how close the two menus are to each other.
-      {%- endcomment -%}
-      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10">
-        {%- for block in section.blocks -%}
-          <div class="flex flex-col gap-3 min-w-[120px]" {{ block.shopify_attributes }}>
-            <h4 class="text-[10px] font-bold uppercase tracking-[0.111em] mb-1 text-white">
-              {{ block.settings.heading | escape }}
-            </h4>
-            {%- if block.settings.menu != blank -%}
-              <div class="flex flex-col gap-2">
-                {%- for link in block.settings.menu.links -%}
-                  <a href="{{ link.url }}" class="text-[10px] text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
-                    {{ link.title }}
-                  </a>
-                {%- endfor -%}
-              </div>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </div>
-
+      {%- comment -%} Menu Blocks {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <div class="flex flex-col gap-3" {{ block.shopify_attributes }}>
+          <h4 class="text-[10px] font-bold uppercase tracking-[0.125em] mb-1 text-white">{{ block.settings.heading | escape }}</h4>
+          {%- if block.settings.menu != blank -%}
+            {%- for link in block.settings.menu.links -%}
+              <a href="{{ link.url }}" class="text-[10px] text-gray-500 uppercase tracking-widest hover:text-white transition-colors">
+                {{ link.title }}
+              </a>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
     </div>
   </div>
 
@@ -75,6 +60,7 @@
     </div>
   </div>
 </footer>
+
 {% schema %}
 {
   "name": "Footer",
