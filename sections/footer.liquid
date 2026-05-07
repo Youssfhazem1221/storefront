@@ -28,12 +28,12 @@
         </div>
       </div>
 
-      {%- comment -%} 
+    {%- comment -%} 
         Menu Container
-        - md:justify-end keeps them to the right
-        - md:gap-32 provides the wider distance you want
+        - md:justify-end keeps the group to the right
+        - md:gap-56 creates a large distance between Quick Links and Support
       {%- endcomment -%}
-      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10 md:gap-32">
+      <div class="md:col-span-2 flex flex-col md:flex-row md:justify-end gap-10 md:gap-56">
         {%- for block in section.blocks -%}
           <div class="flex flex-col gap-3 min-w-[140px]" {{ block.shopify_attributes }}>
             <h4 class="text-[10px] font-bold uppercase tracking-[0.25em] mb-1 text-white">
