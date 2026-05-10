@@ -31,11 +31,16 @@
     "17768933019e2a442f": {
       "type": "_blocks",
       "settings": {}
+    },
+    "1778425337f6553ae6": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
     "hero",
     "featured",
-    "17768933019e2a442f"
+    "17768933019e2a442f",
+    "1778425337f6553ae6"
   ]
 }
