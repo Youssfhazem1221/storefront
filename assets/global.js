@@ -180,13 +180,3 @@
   });
 
 })();
-/* Footer menus — push right and tighten gap */
-.footer__menus,
-.footer__blocks-wrapper .footer__block--menu ~ .footer__block--menu,
-.footer-grid .footer__block--menu {
-  margin-left: auto;
-}
-
-.footer__blocks-wrapper {
-  column-gap: 16px; /* reduce this to bring menus closer */
-}
